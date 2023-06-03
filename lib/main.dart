@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
             boxShadow:[
               BoxShadow(
                 color: Colors.grey,
-                blurRadius: 10,
+                // blurRadius: 10,
               ),
             ]),
           child: Text(
@@ -52,6 +52,42 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: const EdgeInsets.all(8),
+          children: <Widget>[
+            // DrawerHeader(
+            //   child: Text('Hi I am a drawer.'),
+            //   decoration: BoxDecoration(color: Colors.purple),
+            // ),
+            UserAccountsDrawerHeader(
+                accountName: Text("Yuvraj Singh"),
+                accountEmail: Text('dev.yuvi@gmail.com'),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/coolme.jpg'),
+                ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text("Yuvraj Singh"),
+              subtitle: Text('Developer'),
+              trailing: Icon(Icons.edit),
+              onTap: (){},
+            ),
+            ListTile(
+              leading: Icon(Icons.email),
+              title: Text("Email"),
+              subtitle: Text('dev.yuvi@gmail.com'),
+              trailing: Icon(Icons.edit),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        child: Icon(Icons.edit),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
