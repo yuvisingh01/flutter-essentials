@@ -4,9 +4,6 @@ import 'package:flutter_essentials/drawer.dart';
 import 'package:http/http.dart'as http;
 
 class HomePage extends StatefulWidget {
-  static const String routeName="/home";
-
-
   const HomePage({Key? key}) : super(key: key);
 
   @override
