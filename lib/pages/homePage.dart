@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_essentials/drawer.dart';
-
+import 'package:http/http.dart'as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,9 +11,34 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //
+  // var myText="Change My Name";
+  // TextEditingController _nameController=TextEditingController();
 
-  var myText="Change My Name";
-  TextEditingController _nameController=TextEditingController();
+  var url="https://jsonplaceholder.typicode.com/users";
+  var data;
+  // get http => null;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchData();
+  }
+
+  fetchData() async{
+    var res = await http.get(Uri.parse(url));
+    data=jsonDecode(res.body);
+    setState(() {
+
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,53 +47,26 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("Awesome App"),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: nameCard(myText: myText, nameController: _nameController),
-          ),
-        ),
+      body: data!=null?ListView.builder(
+        itemBuilder: (context,index){
+          return ListTile(
+            title: Text(data[index]["name"]),
+            subtitle: Text(data[index]['username']),
+            trailing: Text(data[index]['website']),
+            leading: Text("ID:${data[index]["id"]}"),
+          );
+        },
+        itemCount:data.length,
+      ):Center(
+        child: CircularProgressIndicator(),
       ),
-      // body: Center(
-      //   child: Container(
-      //     padding: const EdgeInsets.all(8),
-      //     width: 100,
-      //     height: 100,
-      //     alignment: Alignment.center,
-      //     // clipBehavior: Clip.antiAlias,
-      //     decoration: BoxDecoration(
-      //       color: Colors.red,
-      //       shape: BoxShape.rectangle,
-      //       borderRadius: BorderRadius.circular(10),
-      //       gradient: LinearGradient(colors: [
-      //             Colors.pink,
-      //             Colors.yellow,
-      //           ]),
-      //       boxShadow:[
-      //         BoxShadow(
-      //           color: Colors.grey,
-      //           // blurRadius: 10,
-      //         ),
-      //       ]),
-      //     child: Text(
-      //       'I am a box',
-      //       textAlign: TextAlign.center,
-      //       style: TextStyle(
-      //           fontSize: 20,
-      //           color: Colors.white,
-      //           fontWeight: FontWeight.bold,
-      //       ),
-      //     ),
-      //   ),
-      // ),
       drawer: MyDrawer(child: ListView()),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          myText=_nameController.text;
-          setState(() {
-
-          });
+          // myText=_nameController.text;
+          // setState(() {
+          //
+          // });
         },
         child: Icon(Icons.send),
       ),
@@ -76,46 +75,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class nameCard extends StatelessWidget {
-  const nameCard({
-    super.key,
-    required this.myText,
-    required TextEditingController nameController,
-  }) : _nameController = nameController;
-
-  final String myText;
-  final TextEditingController _nameController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: <Widget>[
-          Image.asset(
-            'assets/images/coding.jpg',
-          ),
-          SizedBox(
-              height: 20
-          ),
-          Text(
-            myText,
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          TextField(
-            controller: _nameController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-
-              ),
-              hintText: "Enter your text",
-              labelText: "Name",
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
